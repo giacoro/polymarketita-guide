@@ -5,889 +5,452 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Guida Polymarket — PolymarketITA</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:ital,wght@0,400;0,500;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg: #0a0a0f;
-    --surface: #111118;
-    --surface2: #18181f;
-    --border: rgba(255,255,255,0.07);
-    --accent: #00e5a0;
-    --accent2: #7c5cfc;
-    --accent3: #ff6b35;
-    --text: #e8e8f0;
-    --muted: #888899;
-    --warning: #f59e0b;
-    --danger: #ef4444;
-  }
-
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-
-  html { scroll-behavior: smooth; }
-
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'Inter', sans-serif;
-    font-weight: 300;
-    line-height: 1.7;
-    overflow-x: hidden;
-  }
-
-  /* ── NOISE TEXTURE ── */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-    pointer-events: none;
-    z-index: 0;
-  }
-
-  /* ── GLOW ORBS ── */
-  .orb {
-    position: fixed;
-    border-radius: 50%;
-    filter: blur(120px);
-    opacity: 0.12;
-    pointer-events: none;
-    z-index: 0;
-  }
-  .orb-1 { width: 600px; height: 600px; background: var(--accent); top: -200px; right: -200px; }
-  .orb-2 { width: 500px; height: 500px; background: var(--accent2); bottom: -200px; left: -200px; }
-
-  /* ── HEADER ── */
-  header {
-    position: relative;
-    z-index: 10;
-    padding: 80px 40px 60px;
-    max-width: 900px;
-    margin: 0 auto;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .tag {
-    display: inline-block;
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--accent);
-    background: rgba(0,229,160,0.08);
-    border: 1px solid rgba(0,229,160,0.2);
-    padding: 4px 12px;
-    border-radius: 2px;
-    margin-bottom: 24px;
-  }
-
-  h1 {
-    font-family: 'Syne', sans-serif;
-    font-size: clamp(2.4rem, 6vw, 4rem);
-    font-weight: 800;
-    line-height: 1.1;
-    letter-spacing: -0.02em;
-    margin-bottom: 20px;
-  }
-
-  h1 span { color: var(--accent); }
-
-  .subtitle {
-    font-size: 1.1rem;
-    color: var(--muted);
-    max-width: 560px;
-    font-weight: 300;
-  }
-
-  .meta {
-    display: flex;
-    gap: 24px;
-    margin-top: 32px;
-    flex-wrap: wrap;
-  }
-
-  .meta-item {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-family: 'DM Mono', monospace;
-    font-size: 12px;
-    color: var(--muted);
-  }
-
-  .meta-dot {
-    width: 6px; height: 6px;
-    border-radius: 50%;
-    background: var(--accent);
-    animation: pulse 2s infinite;
-  }
-
-  @keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.3; }
-  }
-
-  /* ── NAV ── */
-  nav {
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    background: rgba(10,10,15,0.85);
-    backdrop-filter: blur(20px);
-    border-bottom: 1px solid var(--border);
-    padding: 0 40px;
-  }
-
-  nav ul {
-    list-style: none;
-    display: flex;
-    gap: 0;
-    max-width: 900px;
-    margin: 0 auto;
-    overflow-x: auto;
-  }
-
-  nav ul::-webkit-scrollbar { display: none; }
-
-  nav a {
-    display: block;
-    padding: 16px 20px;
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--muted);
-    text-decoration: none;
-    white-space: nowrap;
-    transition: color 0.2s;
-    border-bottom: 2px solid transparent;
-  }
-
-  nav a:hover { color: var(--accent); border-bottom-color: var(--accent); }
-
-  /* ── MAIN ── */
-  main {
-    position: relative;
-    z-index: 1;
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 0 40px 80px;
-  }
-
-  /* ── SECTIONS ── */
-  section {
-    padding: 60px 0;
-    border-bottom: 1px solid var(--border);
-  }
-
-  section:last-child { border-bottom: none; }
-
-  .section-num {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    color: var(--accent);
-    letter-spacing: 0.1em;
-    margin-bottom: 8px;
-  }
-
-  h2 {
-    font-family: 'Syne', sans-serif;
-    font-size: 1.9rem;
-    font-weight: 700;
-    letter-spacing: -0.02em;
-    margin-bottom: 28px;
-    line-height: 1.2;
-  }
-
-  h3 {
-    font-family: 'Syne', sans-serif;
-    font-size: 1.15rem;
-    font-weight: 600;
-    margin-bottom: 12px;
-    margin-top: 32px;
-    color: var(--text);
-  }
-
-  p { margin-bottom: 16px; color: var(--text); font-weight: 300; }
-
-  /* ── CALLOUT BOXES ── */
-  .callout {
-    border-left: 3px solid var(--accent);
-    background: rgba(0,229,160,0.04);
-    padding: 16px 20px;
-    margin: 24px 0;
-    border-radius: 0 4px 4px 0;
-  }
-
-  .callout.warning {
-    border-left-color: var(--warning);
-    background: rgba(245,158,11,0.05);
-  }
-
-  .callout.danger {
-    border-left-color: var(--danger);
-    background: rgba(239,68,68,0.05);
-  }
-
-  .callout-title {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--accent);
-    margin-bottom: 6px;
-  }
-
-  .callout.warning .callout-title { color: var(--warning); }
-  .callout.danger .callout-title { color: var(--danger); }
-
-  .callout p { margin: 0; font-size: 0.9rem; }
-
-  /* ── CARDS GRID ── */
-  .cards {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-    gap: 16px;
-    margin: 24px 0;
-  }
-
-  .card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 20px;
-    transition: border-color 0.2s, transform 0.2s;
-  }
-
-  .card:hover {
-    border-color: rgba(0,229,160,0.3);
-    transform: translateY(-2px);
-  }
-
-  .card-icon {
-    font-size: 1.4rem;
-    margin-bottom: 10px;
-    display: block;
-  }
-
-  .card-title {
-    font-family: 'Syne', sans-serif;
-    font-weight: 600;
-    font-size: 0.95rem;
-    margin-bottom: 6px;
-    color: var(--text);
-  }
-
-  .card-desc {
-    font-size: 0.82rem;
-    color: var(--muted);
-    line-height: 1.5;
-    margin: 0;
-  }
-
-  .card-badge {
-    display: inline-block;
-    margin-top: 10px;
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    padding: 2px 8px;
-    border-radius: 2px;
-    letter-spacing: 0.05em;
-  }
-
-  .badge-green { background: rgba(0,229,160,0.1); color: var(--accent); }
-  .badge-purple { background: rgba(124,92,252,0.12); color: #a78bfa; }
-  .badge-orange { background: rgba(255,107,53,0.1); color: var(--accent3); }
-  .badge-yellow { background: rgba(245,158,11,0.1); color: var(--warning); }
-
-  /* ── STEPS ── */
-  .steps { margin: 24px 0; }
-
-  .step {
-    display: flex;
-    gap: 20px;
-    padding: 20px 0;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .step:last-child { border-bottom: none; }
-
-  .step-num {
-    flex-shrink: 0;
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: 'DM Mono', monospace;
-    font-size: 12px;
-    color: var(--accent);
-    margin-top: 2px;
-  }
-
-  .step-content h4 {
-    font-family: 'Syne', sans-serif;
-    font-weight: 600;
-    margin-bottom: 6px;
-    font-size: 0.95rem;
-  }
-
-  .step-content p {
-    font-size: 0.87rem;
-    color: var(--muted);
-    margin: 0;
-  }
-
-  /* ── TABLE ── */
-  .table-wrap { overflow-x: auto; margin: 24px 0; }
-
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 0.87rem;
-  }
-
-  th {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--muted);
-    padding: 10px 16px;
-    text-align: left;
-    border-bottom: 1px solid var(--border);
-    white-space: nowrap;
-  }
-
-  td {
-    padding: 12px 16px;
-    border-bottom: 1px solid rgba(255,255,255,0.04);
-    color: var(--text);
-    vertical-align: top;
-  }
-
-  tr:last-child td { border-bottom: none; }
-  tr:hover td { background: rgba(255,255,255,0.02); }
-
-  .check { color: var(--accent); }
-  .cross { color: var(--danger); }
-
-  /* ── CODE ── */
-  code {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.82rem;
-    background: var(--surface2);
-    color: var(--accent);
-    padding: 2px 6px;
-    border-radius: 3px;
-  }
-
-  /* ── HIGHLIGHT ROW ── */
-  .highlight-row {
-    background: rgba(0,229,160,0.04);
-    border: 1px solid rgba(0,229,160,0.12);
-    border-radius: 6px;
-    padding: 16px 20px;
-    margin: 16px 0;
-    display: flex;
-    align-items: flex-start;
-    gap: 14px;
-  }
-
-  .highlight-icon { font-size: 1.2rem; flex-shrink: 0; margin-top: 1px; }
-
-  .highlight-text { font-size: 0.88rem; }
-  .highlight-text strong { color: var(--accent); font-weight: 500; }
-  .highlight-text p { margin: 0; color: var(--muted); }
-
-  /* ── FOOTER ── */
-  footer {
-    position: relative;
-    z-index: 1;
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 40px 40px 60px;
-    border-top: 1px solid var(--border);
-  }
-
-  .footer-content {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    flex-wrap: wrap;
-    gap: 20px;
-  }
-
-  .footer-brand {
-    font-family: 'Syne', sans-serif;
-    font-weight: 700;
-    font-size: 1.1rem;
-  }
-
-  .footer-brand span { color: var(--accent); }
-
-  .footer-note {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    color: var(--muted);
-    max-width: 380px;
-    line-height: 1.6;
-    text-align: right;
-  }
-
-  /* ── ANIMATIONS ── */
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  section { animation: fadeUp 0.5s ease both; }
-
-  /* ── RESPONSIVE ── */
-  @media (max-width: 600px) {
-    header, main, footer { padding-left: 20px; padding-right: 20px; }
-    nav { padding: 0 16px; }
-    h1 { font-size: 2rem; }
-    .cards { grid-template-columns: 1fr; }
-    .footer-note { text-align: left; }
-  }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #f5f5f7; --surface: #ffffff; --ink: #1d1d1f; --ink2: #3a3a3c; --ink3: #6e6e73; --ink4: #aeaeb2; --sep: #d2d2d7;
+  --blue: #0071e3; --blue-light: #e8f0fb; --green: #1a9141; --green-light: #e6f4ea;
+  --amber: #9a6700; --amber-light: #fef9ed; --red: #c41230; --red-light: #fdf2f4;
+  --tg: #0088cc; --tg-light: #e3f2fa;
+  --radius: 16px; --radius-sm: 10px;
+  --font: 'Figtree', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+}
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+body { font-family: var(--font); background: var(--bg); color: var(--ink); font-size: 17px; line-height: 1.58; font-weight: 300; -webkit-font-smoothing: antialiased; }
+.wrap { max-width: 860px; margin: 0 auto; padding: 0 24px; }
+
+/* NAV */
+.nav { position: sticky; top: 0; z-index: 100; background: rgba(245,245,247,0.85); backdrop-filter: saturate(180%) blur(20px); -webkit-backdrop-filter: saturate(180%) blur(20px); border-bottom: 1px solid var(--sep); }
+.nav-inner { max-width: 860px; margin: 0 auto; padding: 0 24px; height: 52px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.nav-brand { font-size: 17px; font-weight: 600; color: var(--ink); white-space: nowrap; text-decoration: none; }
+.nav-brand span { color: var(--blue); }
+.nav-right { display: flex; align-items: center; gap: 6px; }
+.nav-links { display: flex; list-style: none; }
+.nav-links a { display: block; padding: 5px 11px; font-size: 13px; color: var(--ink3); text-decoration: none; border-radius: 20px; transition: background .15s, color .15s; white-space: nowrap; }
+.nav-links a:hover { background: rgba(0,0,0,0.06); color: var(--ink); }
+.nav-tg { display: inline-flex; align-items: center; gap: 5px; background: var(--tg); color: #fff; text-decoration: none; font-size: 13px; font-weight: 500; padding: 6px 13px; border-radius: 20px; white-space: nowrap; transition: opacity .15s; }
+.nav-tg:hover { opacity: .85; }
+.nav-tg svg { width: 13px; height: 13px; fill: #fff; flex-shrink: 0; }
+
+/* HERO */
+.hero { padding: 80px 0 60px; text-align: center; animation: fadeUp .5s ease both; }
+.hero-eyebrow { display: inline-block; font-size: 13px; font-weight: 500; color: var(--blue); letter-spacing: .02em; text-transform: uppercase; margin-bottom: 18px; }
+.hero h1 { font-size: clamp(2.2rem, 6vw, 3.6rem); font-weight: 700; letter-spacing: -.025em; line-height: 1.08; color: var(--ink); margin-bottom: 18px; }
+.hero-sub { font-size: 19px; font-weight: 300; color: var(--ink3); max-width: 560px; margin: 0 auto 30px; line-height: 1.5; }
+.hero-actions { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-bottom: 24px; }
+.btn-tg { display: inline-flex; align-items: center; gap: 8px; background: var(--tg); color: #fff; text-decoration: none; font-size: 15px; font-weight: 500; padding: 12px 24px; border-radius: 980px; transition: opacity .15s; }
+.btn-tg:hover { opacity: .85; }
+.btn-tg svg { width: 17px; height: 17px; fill: #fff; }
+.hero-pills { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+.pill { background: var(--surface); border: 1px solid var(--sep); border-radius: 20px; padding: 5px 14px; font-size: 13px; color: var(--ink3); }
+
+/* TOC */
+.toc-strip { background: var(--surface); border-radius: var(--radius); padding: 22px 26px; margin-bottom: 12px; display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 2px; animation: fadeUp .5s .05s ease both; }
+.toc-item { display: flex; align-items: center; gap: 10px; padding: 8px 10px; text-decoration: none; color: var(--ink2); font-size: 14px; border-radius: 8px; transition: background .12s; }
+.toc-item:hover { background: var(--bg); color: var(--ink); }
+.toc-num { font-size: 11px; font-weight: 600; color: var(--blue); width: 22px; flex-shrink: 0; }
+
+/* SECTIONS */
+section { margin-bottom: 12px; animation: fadeUp .4s ease both; }
+.sc { background: var(--surface); border-radius: var(--radius); padding: 40px 40px 44px; scroll-margin-top: 70px; }
+.slabel { font-size: 12px; font-weight: 600; color: var(--blue); letter-spacing: .06em; text-transform: uppercase; margin-bottom: 8px; }
+h2 { font-size: clamp(1.5rem, 3.5vw, 2rem); font-weight: 700; letter-spacing: -.022em; line-height: 1.15; color: var(--ink); margin-bottom: 20px; }
+h3 { font-size: 12px; font-weight: 600; letter-spacing: .07em; text-transform: uppercase; color: var(--ink4); margin: 34px 0 12px; }
+h4 { font-size: 15px; font-weight: 600; color: var(--ink); margin-bottom: 4px; }
+p { color: var(--ink2); font-size: 15px; line-height: 1.6; margin-bottom: 14px; font-weight: 300; }
+p:last-child { margin-bottom: 0; }
+p strong { color: var(--ink); font-weight: 500; }
+em { font-style: italic; }
+
+/* ALERTS */
+.al { border-radius: var(--radius-sm); padding: 14px 18px; margin: 18px 0; display: flex; gap: 12px; align-items: flex-start; }
+.al-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+.al-body { flex: 1; }
+.al-title { font-size: 13px; font-weight: 600; margin-bottom: 3px; }
+.al-body p { font-size: 14px; margin: 0; line-height: 1.5; }
+.al.info  { background: var(--blue-light); } .al.info .al-title  { color: var(--blue); }
+.al.ok    { background: var(--green-light); } .al.ok .al-title    { color: var(--green); }
+.al.warn  { background: var(--amber-light); } .al.warn .al-title  { color: var(--amber); }
+.al.stop  { background: var(--red-light); }  .al.stop .al-title  { color: var(--red); }
+
+/* CARDS */
+.cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; margin: 14px 0; }
+.card { background: var(--bg); border-radius: var(--radius-sm); padding: 18px 18px 16px; display: flex; flex-direction: column; gap: 5px; }
+.ci { font-size: 20px; line-height: 1; }
+.ct { font-size: 14px; font-weight: 600; color: var(--ink); line-height: 1.3; }
+.cd { font-size: 13px; color: var(--ink3); line-height: 1.5; flex: 1; margin: 0; }
+.badge { display: inline-block; font-size: 11px; font-weight: 500; padding: 2px 8px; border-radius: 20px; margin-top: 4px; align-self: flex-start; }
+.b-blue  { background: var(--blue-light); color: var(--blue); }
+.b-green { background: var(--green-light); color: var(--green); }
+.b-amber { background: var(--amber-light); color: var(--amber); }
+.b-red   { background: var(--red-light); color: var(--red); }
+.b-gray  { background: #ebebed; color: var(--ink3); }
+
+/* STEPS */
+.steps { margin: 14px 0; }
+.step { display: grid; grid-template-columns: 36px 1fr; gap: 0 16px; padding: 16px 0; border-bottom: 1px solid var(--bg); align-items: start; }
+.step:last-child { border-bottom: none; padding-bottom: 0; }
+.step:first-child { padding-top: 0; }
+.sn { width: 28px; height: 28px; background: var(--bg); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600; color: var(--blue); flex-shrink: 0; margin-top: 2px; }
+.step h4 { margin-bottom: 3px; }
+.step p { font-size: 14px; color: var(--ink3); margin: 0; }
+.step p code { font-family: 'SF Mono','Fira Code',monospace; font-size: 12px; background: rgba(0,0,0,.06); padding: 1px 5px; border-radius: 4px; color: var(--ink2); }
+
+/* TABLE */
+.tw { overflow-x: auto; margin: 14px 0; -webkit-overflow-scrolling: touch; }
+table { width: 100%; border-collapse: collapse; font-size: 14px; }
+thead th { font-size: 11px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--ink4); padding: 8px 14px; text-align: left; border-bottom: 1px solid var(--sep); white-space: nowrap; }
+td { padding: 12px 14px; border-bottom: 1px solid var(--bg); vertical-align: top; color: var(--ink2); line-height: 1.45; }
+tr:last-child td { border-bottom: none; }
+tbody tr:hover td { background: rgba(0,0,0,.015); }
+td:first-child { color: var(--ink); font-weight: 500; }
+.chk { color: var(--green); }
+
+/* HIGHLIGHT */
+.hl { background: var(--bg); border-radius: var(--radius-sm); padding: 16px 20px; margin: 18px 0; display: flex; gap: 14px; align-items: flex-start; }
+.hl-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+.hl-body strong { display: block; font-size: 14px; font-weight: 600; color: var(--ink); margin-bottom: 4px; }
+.hl-body p { font-size: 14px; color: var(--ink3); margin: 0; }
+.hl-body code { font-family: 'SF Mono','Fira Code',monospace; font-size: 13px; background: rgba(0,0,0,.06); padding: 1px 5px; border-radius: 4px; color: var(--ink2); }
+
+/* TG BANNER */
+.tg-banner { background: var(--tg); border-radius: var(--radius); padding: 32px 36px; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
+.tg-banner h3 { font-size: 20px; font-weight: 700; color: #fff; text-transform: none; letter-spacing: -.01em; margin: 0 0 6px; }
+.tg-banner p { font-size: 14px; color: rgba(255,255,255,.75); margin: 0; font-weight: 300; }
+.tg-banner p strong { color: #fff; font-weight: 600; }
+.btn-tg-w { display: inline-flex; align-items: center; gap: 8px; background: #fff; color: var(--tg); text-decoration: none; font-size: 15px; font-weight: 600; padding: 12px 22px; border-radius: 980px; white-space: nowrap; transition: opacity .15s; flex-shrink: 0; }
+.btn-tg-w:hover { opacity: .9; }
+.btn-tg-w svg { width: 16px; height: 16px; fill: var(--tg); }
+
+/* FOOTER */
+.footer { margin: 12px 0 0; padding: 28px 0 52px; border-top: 1px solid var(--sep); display: flex; justify-content: space-between; align-items: flex-start; gap: 20px; flex-wrap: wrap; }
+.footer-brand { font-size: 15px; font-weight: 600; color: var(--ink); }
+.footer-brand span { color: var(--blue); }
+.footer-sub { font-size: 13px; color: var(--ink4); margin-top: 4px; }
+.footer-tg { display: inline-flex; align-items: center; gap: 6px; color: var(--tg); text-decoration: none; font-size: 13px; font-weight: 500; margin-top: 8px; }
+.footer-tg:hover { text-decoration: underline; }
+.footer-note { font-size: 12px; color: var(--ink4); max-width: 360px; text-align: right; line-height: 1.7; }
+
+/* ANIMATIONS */
+@keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+
+/* RESPONSIVE */
+@media (max-width: 640px) {
+  .wrap { padding: 0 16px; }
+  .sc { padding: 28px 20px 32px; }
+  .hero { padding: 48px 0 36px; }
+  .nav-links { display: none; }
+  .cards { grid-template-columns: 1fr 1fr; }
+  .toc-strip { grid-template-columns: 1fr 1fr; padding: 16px; }
+  .footer-note { text-align: left; }
+  .tg-banner { padding: 24px 20px; }
+  .tg-banner h3 { font-size: 17px; }
+}
+@media (max-width: 400px) {
+  .cards { grid-template-columns: 1fr; }
+  .toc-strip { grid-template-columns: 1fr; }
+}
 </style>
 </head>
 <body>
 
-<div class="orb orb-1"></div>
-<div class="orb orb-2"></div>
-
-<!-- HEADER -->
-<header>
-  <div class="tag">PolymarketITA · Guida 2026</div>
-  <h1>La guida <span>definitiva</span><br>a Polymarket</h1>
-  <p class="subtitle">Tutto quello che serve sapere: dalla registrazione alle VPN, fino agli strumenti professionali di analisi.</p>
-  <div class="meta">
-    <div class="meta-item"><div class="meta-dot"></div> Aggiornata marzo 2026</div>
-    <div class="meta-item">· Per utenti italiani</div>
-    <div class="meta-item">· Gratuita & open</div>
-  </div>
-</header>
-
 <!-- NAV -->
-<nav>
-  <ul>
-    <li><a href="#cos-e">Cos'è</a></li>
-    <li><a href="#italia">Italia & VPN</a></li>
-    <li><a href="#iniziare">Iniziare</a></li>
-    <li><a href="#meccanica">Come funziona</a></li>
-    <li><a href="#analisi">Analisi</a></li>
-    <li><a href="#strategie">Strategie</a></li>
-    <li><a href="#rischi">Rischi</a></li>
-  </ul>
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-brand" href="#">Polymarket<span>ITA</span></a>
+    <div class="nav-right">
+      <ul class="nav-links">
+        <li><a href="#cos-e">Cos'è</a></li>
+        <li><a href="#italia">VPN</a></li>
+        <li><a href="#iniziare">Setup</a></li>
+        <li><a href="#meccanica">Mercati</a></li>
+        <li><a href="#analisi">Analisi</a></li>
+        <li><a href="#strategie">Strategie</a></li>
+        <li><a href="#rischi">Rischi</a></li>
+      </ul>
+      <a class="nav-tg" href="https://t.me/polymarketita" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12L7.17 13.696l-2.94-.918c-.64-.203-.653-.64.136-.954l11.48-4.43c.534-.194 1.002.13.832.827h.006z"/></svg>
+        @polymarketita
+      </a>
+    </div>
+  </div>
 </nav>
 
-<!-- MAIN -->
-<main>
+<div class="wrap">
 
-  <!-- 1. COS'È POLYMARKET -->
-  <section id="cos-e">
-    <div class="section-num">01 — Introduzione</div>
-    <h2>Cos'è Polymarket</h2>
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow">PolymarketITA · Guida 2026</div>
+  <h1>La guida definitiva<br>a Polymarket</h1>
+  <p class="hero-sub">Tutto quello che serve sapere: dalla registrazione alle VPN, fino agli strumenti professionali di analisi.</p>
+  <div class="hero-actions">
+    <a class="btn-tg" href="https://t.me/polymarketita" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12L7.17 13.696l-2.94-.918c-.64-.203-.653-.64.136-.954l11.48-4.43c.534-.194 1.002.13.832.827h.006z"/></svg>
+      Unisciti al gruppo Telegram
+    </a>
+  </div>
+  <div class="hero-pills">
+    <span class="pill">Aggiornata marzo 2026</span>
+    <span class="pill">Per utenti italiani</span>
+    <span class="pill">Gratuita &amp; open</span>
+  </div>
+</div>
 
-    <p>Polymarket è il più grande <strong>mercato predittivo</strong> al mondo. Ti permette di tradare su eventi futuri — elezioni, decisioni Fed, crypto, sport, geopolitica — usando USDC (un dollaro digitale stabile) sulla blockchain Polygon.</p>
+<!-- TOC -->
+<div class="toc-strip">
+  <a class="toc-item" href="#cos-e"><span class="toc-num">01</span>Cos'è Polymarket</a>
+  <a class="toc-item" href="#italia"><span class="toc-num">02</span>Italia &amp; VPN</a>
+  <a class="toc-item" href="#iniziare"><span class="toc-num">03</span>Registrazione &amp; depositi</a>
+  <a class="toc-item" href="#meccanica"><span class="toc-num">04</span>Come funzionano i mercati</a>
+  <a class="toc-item" href="#analisi"><span class="toc-num">05</span>Strumenti di analisi</a>
+  <a class="toc-item" href="#strategie"><span class="toc-num">06</span>Strategie di base</a>
+  <a class="toc-item" href="#rischi"><span class="toc-num">07</span>Rischi da conoscere</a>
+</div>
 
-    <p>Il principio è semplice: ogni mercato è una domanda binaria. Se credi che un evento si verificherà, compri shares "Sì" a un prezzo tra 0¢ e 100¢. Se l'evento si verifica, ogni share vale esattamente 100¢. Se non si verifica, vale 0¢.</p>
-
-    <div class="callout">
-      <div class="callout-title">📌 Perché Polymarket è diverso dalle scommesse classiche</div>
+<!-- 01 -->
+<section id="cos-e">
+<div class="sc">
+  <div class="slabel">01 — Introduzione</div>
+  <h2>Cos'è Polymarket</h2>
+  <p>Polymarket è il più grande <strong>mercato predittivo</strong> al mondo. Ti permette di tradare su eventi futuri — elezioni, decisioni Fed, crypto, sport, geopolitica — usando USDC (un dollaro digitale stabile) sulla blockchain Polygon.</p>
+  <p>Il principio è semplice: ogni mercato è una domanda binaria. Se credi che un evento si verificherà, compri shares "Sì" a un prezzo tra 0¢ e 100¢. Se l'evento si verifica, ogni share vale esattamente 100¢. Se non si verifica, vale 0¢.</p>
+  <div class="al info">
+    <div class="al-icon">📌</div>
+    <div class="al-body">
+      <div class="al-title">Perché è diverso dalle scommesse classiche</div>
       <p>Non sei contro un bookmaker che fissa le quote: tradi con altri utenti reali. I prezzi riflettono la probabilità collettiva del mercato — spesso più accurata di sondaggi o media.</p>
     </div>
+  </div>
+  <div class="cards">
+    <div class="card"><div class="ci">⛓️</div><div class="ct">Blockchain Polygon</div><p class="cd">Tutto on-chain, trasparente. Nessun intermediario può manipolare i pagamenti.</p><span class="badge b-blue">Decentralizzato</span></div>
+    <div class="card"><div class="ci">💵</div><div class="ct">Solo USDC</div><p class="cd">1 USDC = 1 dollaro, stabile. Nessuna volatilità crypto nel saldo.</p><span class="badge b-green">Stablecoin</span></div>
+    <div class="card"><div class="ci">🌍</div><div class="ct">$40B+ di volume</div><p class="cd">Nel 2025 ha superato 40 miliardi di dollari in volume. La liquidità è reale.</p><span class="badge b-amber">Mercato enorme</span></div>
+  </div>
+</div>
+</section>
 
-    <div class="cards">
-      <div class="card">
-        <span class="card-icon">⛓️</span>
-        <div class="card-title">Blockchain Polygon</div>
-        <p class="card-desc">Tutto on-chain, trasparente. Nessun intermediario può manipolare i pagamenti.</p>
-        <span class="card-badge badge-purple">Decentralizzato</span>
-      </div>
-      <div class="card">
-        <span class="card-icon">💵</span>
-        <div class="card-title">Solo USDC</div>
-        <p class="card-desc">L'unica valuta è USDC — 1 USDC = 1 dollaro, stabile, nessuna volatilità crypto.</p>
-        <span class="card-badge badge-green">Stablecoin</span>
-      </div>
-      <div class="card">
-        <span class="card-icon">🌍</span>
-        <div class="card-title">$40B+ di volume</div>
-        <p class="card-desc">Nel 2025 ha superato 40 miliardi di dollari in volume totale. La liquidità è reale.</p>
-        <span class="card-badge badge-orange">Mercato enorme</span>
-      </div>
-    </div>
-  </section>
-
-  <!-- 2. ITALIA & VPN -->
-  <section id="italia">
-    <div class="section-num">02 — Accesso dall'Italia</div>
-    <h2>Situazione Italia & come usare una VPN</h2>
-
-    <div class="callout danger">
-      <div class="callout-title">⚠️ Situazione attuale in Italia</div>
-      <p>A ottobre 2025 Polymarket è stato inserito nella blacklist dell'ADM (Agenzia dei Monopoli), con conseguente blocco dall'Italia. A dicembre 2025 l'accesso è stato ripristinato, ma la situazione rimane soggetta a valutazioni regolatorie. Una VPN è comunque consigliata per stabilità e privacy.</p>
-    </div>
-
-    <p>Polymarket applica sistemi di geoblocking. Senza VPN potresti vedere la piattaforma in modalità "view only" — puoi guardare ma non tradare. Il problema principale è che Polymarket rileva attivamente le VPN, quindi non tutte funzionano.</p>
-
-    <h3>Le VPN che funzionano con Polymarket</h3>
-
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th>VPN</th>
-            <th>Affidabilità</th>
-            <th>Prezzo/mese</th>
-            <th>Server utili</th>
-            <th>Pagamento crypto</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><strong>NordVPN</strong></td>
-            <td><span class="check">✓✓✓</span> Top</td>
-            <td>~€3/mese (2 anni)</td>
-            <td>Paesi Bassi, Brasile, Giappone</td>
-            <td><span class="check">✓</span></td>
-          </tr>
-          <tr>
-            <td><strong>Surfshark</strong></td>
-            <td><span class="check">✓✓</span> Ottima</td>
-            <td>~€2/mese (2 anni)</td>
-            <td>Germania, Svizzera</td>
-            <td><span class="check">✓</span></td>
-          </tr>
-          <tr>
-            <td><strong>Proton VPN</strong></td>
-            <td><span class="check">✓✓</span> Ottima</td>
-            <td>Gratis (base) / €5</td>
-            <td>Svizzera, Islanda</td>
-            <td><span class="check">✓</span></td>
-          </tr>
-          <tr>
-            <td><strong>ExpressVPN</strong></td>
-            <td><span class="check">✓✓</span> Buona</td>
-            <td>~€6/mese (1 anno)</td>
-            <td>UK, Singapore</td>
-            <td><span class="check">✓</span></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <div class="callout warning">
-      <div class="callout-title">💡 Consiglio pratico</div>
-      <p>Preferisci server in <strong>Paesi Bassi, Brasile o Giappone</strong>. Cancella cache e cookie prima di accedere a Polymarket con la VPN attiva. Se compare il tasto "Deposita" in alto a destra, sei dentro correttamente.</p>
-    </div>
-
-    <h3>Guida passo-passo con VPN</h3>
-    <div class="steps">
-      <div class="step">
-        <div class="step-num">1</div>
-        <div class="step-content">
-          <h4>Scegli e installa una VPN</h4>
-          <p>NordVPN o Surfshark per il miglior rapporto qualità/prezzo. Scarica l'app sul tuo dispositivo (desktop o mobile).</p>
-        </div>
-      </div>
-      <div class="step">
-        <div class="step-num">2</div>
-        <div class="step-content">
-          <h4>Connettiti a un server supportato</h4>
-          <p>Seleziona un server in Paesi Bassi, Brasile o Giappone. Evita USA, UK, Francia, Germania — sono anche loro bloccati.</p>
-        </div>
-      </div>
-      <div class="step">
-        <div class="step-num">3</div>
-        <div class="step-content">
-          <h4>Cancella cache del browser</h4>
-          <p>Prima di aprire Polymarket, vai nelle impostazioni del browser e cancella cache e cookie. Questo rimuove tracce della tua posizione reale.</p>
-        </div>
-      </div>
-      <div class="step">
-        <div class="step-num">4</div>
-        <div class="step-content">
-          <h4>Accedi a polymarket.com</h4>
-          <p>Registrati con email o Google. Verifica che appaia il bottone "Deposita" in alto a destra — segnale che stai tradando in modalità completa.</p>
-        </div>
-      </div>
-      <div class="step">
-        <div class="step-num">5</div>
-        <div class="step-content">
-          <h4>Mantieni la VPN sempre attiva durante il trading</h4>
-          <p>Non disconnetterti mentre hai posizioni aperte. Configura il kill switch della VPN per bloccare il traffico se la connessione cade.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 3. INIZIARE -->
-  <section id="iniziare">
-    <div class="section-num">03 — Setup</div>
-    <h2>Come iniziare: registrazione e depositi</h2>
-
-    <h3>Registrazione</h3>
-    <p>Puoi accedere con <strong>email o Google account</strong>. Polymarket crea automaticamente un wallet custodiale (gestito da loro) — non serve avere già un wallet crypto. Per funzioni avanzate puoi collegare MetaMask o altri wallet esterni.</p>
-
-    <h3>Come depositare fondi</h3>
-    <div class="cards">
-      <div class="card">
-        <span class="card-icon">💎</span>
-        <div class="card-title">Crypto (consigliato)</div>
-        <p class="card-desc">Deposita USDC direttamente su rete Polygon. Commissioni minime, privacy massima. Puoi convertire da qualsiasi exchange (Binance, Coinbase, Kraken).</p>
-        <span class="card-badge badge-green">Più veloce</span>
-      </div>
-      <div class="card">
-        <span class="card-icon">💳</span>
-        <div class="card-title">Carta di credito/debito</div>
-        <p class="card-desc">Fino a $50.000 limite. Attesa fino a 5 minuti. Più semplice per chi non ha crypto, ma lascia più tracce.</p>
-        <span class="card-badge badge-yellow">Limite $50k</span>
-      </div>
-      <div class="card">
-        <span class="card-icon">🅿️</span>
-        <div class="card-title">PayPal</div>
-        <p class="card-desc">Fino a $10.000 limite. Attesa fino a 5 minuti. Comodo ma con limite basso.</p>
-        <span class="card-badge badge-yellow">Limite $10k</span>
-      </div>
-    </div>
-
-    <div class="callout">
-      <div class="callout-title">🔑 Come comprare USDC per depositare</div>
-      <p>1. Crea un account su Coinbase o Binance → 2. Compra USDC con euro → 3. Invia a Polymarket su rete Polygon → 4. Il saldo appare in pochi minuti. Attenzione: usa sempre la rete <strong>Polygon</strong>, non Ethereum (commissioni altissime).</p>
-    </div>
-  </section>
-
-  <!-- 4. MECCANICA -->
-  <section id="meccanica">
-    <div class="section-num">04 — Meccanica</div>
-    <h2>Come funzionano i mercati</h2>
-
-    <p>Ogni mercato è una domanda con risposta Sì/No. Il prezzo di una share esprime la <strong>probabilità implicita</strong>: una share "Sì" a 65¢ significa che il mercato valuta al 65% la probabilità che l'evento accada.</p>
-
-    <div class="highlight-row">
-      <div class="highlight-icon">💡</div>
-      <div class="highlight-text">
-        <strong>Esempio pratico</strong>
-        <p>Mercato: "Il BTC supererà $120k entro giugno 2026?" — prezzo: 42¢. Se compri 100 shares "Sì" paghi $42. Se BTC supera $120k, incassi $100. Profitto: $58. Se non succede, perdi $42.</p>
-      </div>
-    </div>
-
-    <h3>Tipologie di mercati</h3>
-    <div class="cards">
-      <div class="card">
-        <span class="card-icon">🗳️</span>
-        <div class="card-title">Politici</div>
-        <p class="card-desc">Elezioni, referendum, nomine governative. I mercati più liquidi e seguiti.</p>
-      </div>
-      <div class="card">
-        <span class="card-icon">📈</span>
-        <div class="card-title">Crypto & Finanza</div>
-        <p class="card-desc">Prezzi BTC/ETH, decisioni Fed sui tassi, indicatori economici.</p>
-      </div>
-      <div class="card">
-        <span class="card-icon">⚽</span>
-        <div class="card-title">Sport</div>
-        <p class="card-desc">Risultati partite, titoli, tornei. Volume in forte crescita nel 2026.</p>
-      </div>
-      <div class="card">
-        <span class="card-icon">🌍</span>
-        <div class="card-title">Geopolitica</div>
-        <p class="card-desc">Conflitti, trattati, eventi internazionali. Alta volatilità.</p>
-      </div>
-    </div>
-
-    <h3>Come vengono risolti i mercati</h3>
-    <p>Ogni mercato ha una fonte di risoluzione definita (Reuters, AP, siti ufficiali). Un gruppo di arbitri (<em>resolvers</em>) determina l'esito seguendo le regole pubblicate. In caso di controversia, UMA Protocol (oracle decentralizzato) decide in ultima istanza.</p>
-
-    <div class="callout warning">
-      <div class="callout-title">⚠️ Leggi sempre le regole del mercato</div>
-      <p>Prima di entrare in un mercato, leggi la sezione "Rules". Ci sono spesso dettagli importanti su come viene definita la condizione di risoluzione — eviti sorprese.</p>
-    </div>
-  </section>
-
-  <!-- 5. STRUMENTI DI ANALISI -->
-  <section id="analisi">
-    <div class="section-num">05 — Analisi</div>
-    <h2>Strumenti di analisi professionali</h2>
-
-    <p>Chi prende Polymarket sul serio non guarda solo il sito principale. Esistono tool di terze parti che danno un vantaggio enorme in termini di dati, tracking dei trader migliori e segnali di mercato.</p>
-
-    <h3>🔍 Analytics & Tracking</h3>
-    <div class="cards">
-      <div class="card">
-        <span class="card-icon">📊</span>
-        <div class="card-title">Polymark.et</div>
-        <p class="card-desc">Dashboard completo: top trader, feed attività real-time, ricerca mercati avanzata. Aggrega dati da Polymarket e Kalshi. Ideale per tracciare i "whale".</p>
-        <span class="card-badge badge-green">Gratuito</span>
-      </div>
-      <div class="card">
-        <span class="card-icon">🧠</span>
-        <div class="card-title">HashDive</div>
-        <p class="card-desc">Calcola uno "Smart Score" (da -100 a +100) per ogni trader basato su performance storica. Screener con filtri per liquidità, volume, momentum e attività whale.</p>
-        <span class="card-badge badge-purple">Avanzato</span>
-      </div>
-      <div class="card">
-        <span class="card-icon">📡</span>
-        <div class="card-title">PolyAlertHub</div>
-        <p class="card-desc">Alert real-time via email o Telegram per variazioni di prezzo, grandi trade e attività dei top trader. Perfetto per non perdere movimenti improvvisi.</p>
-        <span class="card-badge badge-orange">Alert Telegram</span>
-      </div>
-      <div class="card">
-        <span class="card-icon">📈</span>
-        <div class="card-title">PredictFolio</div>
-        <p class="card-desc">Analisi gratuita del tuo portafoglio e di quello degli altri trader. PnL real-time, win rate, volume scambiato, confronto con top wallet.</p>
-        <span class="card-badge badge-green">Gratuito</span>
-      </div>
-      <div class="card">
-        <span class="card-icon">🤖</span>
-        <div class="card-title">Polyfactual</div>
-        <p class="card-desc">AI-powered: incolla l'URL di un mercato e ottieni analisi di sentiment, rischio e confidence. Dice se un mercato è sopra/sotto-prezzato rispetto alle news.</p>
-        <span class="card-badge badge-purple">AI</span>
-      </div>
-      <div class="card">
-        <span class="card-icon">🔄</span>
-        <div class="card-title">DeFiRate Aggregator</div>
-        <p class="card-desc">Dashboard live che confronta Polymarket e Kalshi su volume, mercati attivi, open interest e transazioni settimanali. Utile per capire dove sta il volume.</p>
-        <span class="card-badge badge-green">Gratuito</span>
-      </div>
-    </div>
-
-    <h3>📰 Fonti di informazione per edge informativo</h3>
-    <div class="cards">
-      <div class="card">
-        <span class="card-icon">🐦</span>
-        <div class="card-title">X (Twitter) — Liste tematiche</div>
-        <p class="card-desc">Crea liste per politica USA, crypto, geopolitica. Spesso i prezzi su Polymarket si muovono prima che le notizie arrivino su siti mainstream.</p>
-      </div>
-      <div class="card">
-        <span class="card-icon">📡</span>
-        <div class="card-title">Manifold Markets</div>
-        <p class="card-desc">Mercato in play-money, utile per trovare probabilità su eventi di nicchia che Polymarket non ha ancora listato. Buona proxy per sentiment.</p>
-      </div>
-      <div class="card">
-        <span class="card-icon">🔭</span>
-        <div class="card-title">Kalshi (confronto prezzi)</div>
-        <p class="card-desc">Stesso evento, prezzo diverso? Potresti trovare opportunità di arbitrage o semplicemente capire quale mercato è più informato.</p>
-      </div>
-    </div>
-
-    <h3>Come tracciare i "whale" (trader con grandi capitali)</h3>
-    <p>I trader con più capitale tendono ad avere informazioni migliori. Tracciarli è una delle strategie più diffuse:</p>
-
-    <div class="steps">
-      <div class="step">
-        <div class="step-num">1</div>
-        <div class="step-content">
-          <h4>Trova i top trader su Polymark.et o HashDive</h4>
-          <p>Filtra per profit totale e win rate. I trader con Smart Score alto e volume elevato sono quelli da seguire.</p>
-        </div>
-      </div>
-      <div class="step">
-        <div class="step-num">2</div>
-        <div class="step-content">
-          <h4>Segui i loro wallet pubblici</h4>
-          <p>Su blockchain tutto è pubblico. Con Polymark.et puoi vedere ogni trade di ogni wallet in tempo reale.</p>
-        </div>
-      </div>
-      <div class="step">
-        <div class="step-num">3</div>
-        <div class="step-content">
-          <h4>Imposta alert su PolyAlertHub</h4>
-          <p>Quando un whale apre una posizione grossa su un mercato che stai seguendo, ricevi una notifica Telegram immediata.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 6. STRATEGIE -->
-  <section id="strategie">
-    <div class="section-num">06 — Strategie</div>
-    <h2>Strategie di base</h2>
-
-    <div class="callout danger">
-      <div class="callout-title">⚠️ Non è un consiglio finanziario</div>
-      <p>Queste sono strategie comuni discusse dalla community. Ognuno è responsabile delle proprie decisioni. Non investire più di quanto puoi permetterti di perdere.</p>
-    </div>
-
-    <h3>1. Sfruttare l'inefficienza dei mercati poco seguiti</h3>
-    <p>I mercati con alto volume (elezioni USA, BTC price) sono efficienti — difficile avere un edge. I mercati con bassa liquidità su eventi niche spesso hanno prezzi sbagliati. Se conosci bene un settore specifico, cerca lì.</p>
-
-    <h3>2. Mean reversion su mercati lontani dalla scadenza</h3>
-    <p>Mercati con scadenza molto lontana tendono a essere più volatili. Un evento improbabile può andare temporaneamente a 30¢ dopo una notizia — se pensi sia ancora al 10%, c'è un trade.</p>
-
-    <h3>3. Fade delle reazioni esagerate alle notizie</h3>
-    <p>Quando esce una notizia, i prezzi spesso sovra-reagiscono nei primi minuti. Se hai una view diversa dal mercato e fonti migliori, puoi entrare contro-trend.</p>
-
-    <h3>4. Seguire i whale (copy trading)</h3>
-    <p>Non l'approccio più sofisticato, ma funziona come punto di partenza. Identifica 3-5 trader con track record verificato e segui le loro posizioni su mercati dove non hai una view propria.</p>
-
-    <div class="highlight-row">
-      <div class="highlight-icon">🧮</div>
-      <div class="highlight-text">
-        <strong>Regola del Kelly Criterion</strong>
-        <p>Per dimensionare le posizioni: <code>f = (bp - q) / b</code> dove b = odds, p = probabilità stimata, q = 1-p. Non rischiare mai tutto su un singolo mercato.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- 7. RISCHI -->
-  <section id="rischi">
-    <div class="section-num">07 — Rischi</div>
-    <h2>Rischi da conoscere</h2>
-
-    <div class="cards">
-      <div class="card">
-        <span class="card-icon">⚖️</span>
-        <div class="card-title">Rischio regolatorio</div>
-        <p class="card-desc">La situazione legale in Italia è in evoluzione. Il blocco ADM del 2025 può ripetersi. Non tenere capitali enormi su Polymarket senza un piano di uscita.</p>
-        <span class="card-badge badge-orange">Alto</span>
-      </div>
-      <div class="card">
-        <span class="card-icon">🔓</span>
-        <div class="card-title">Smart contract risk</div>
-        <p class="card-desc">Il codice blockchain può avere bug. Sebbene Polymarket sia auditato, il rischio tecnico esiste come su qualsiasi protocollo DeFi.</p>
-        <span class="card-badge badge-yellow">Basso-medio</span>
-      </div>
-      <div class="card">
-        <span class="card-icon">💧</span>
-        <div class="card-title">Liquidità bassa</div>
-        <p class="card-desc">Su mercati niche, lo spread bid/ask può essere ampio. Potresti non riuscire a uscire da una posizione al prezzo che vuoi.</p>
-        <span class="card-badge badge-yellow">Variabile</span>
-      </div>
-      <div class="card">
-        <span class="card-icon">🎲</span>
-        <div class="card-title">Overconfidence bias</div>
-        <p class="card-desc">Il rischio principale non è tecnico ma psicologico: sopravvalutare le proprie previsioni. Tieni un diario delle tue trade e monitora il tuo win rate reale.</p>
-        <span class="card-badge badge-orange">Alto</span>
-      </div>
-    </div>
-
-    <div class="callout warning">
-      <div class="callout-title">📋 Checklist prima di ogni trade</div>
-      <p>① Hai letto le regole di risoluzione del mercato? ② Il tuo edge è reale o stai seguendo un bias? ③ Hai dimensionato la posizione in modo da non perdere più del 5% del capitale su un singolo trade? ④ Hai un piano se il prezzo va contro di te?</p>
-    </div>
-  </section>
-
-</main>
-
-<!-- FOOTER -->
-<footer>
-  <div class="footer-content">
-    <div>
-      <div class="footer-brand">Polymarket<span>ITA</span></div>
-      <p style="font-size:0.8rem; color:var(--muted); margin-top:4px;">La community italiana dei prediction markets</p>
-    </div>
-    <div class="footer-note">
-      Questa guida è a scopo informativo. L'uso di Polymarket dall'Italia è soggetto a normative in evoluzione. Non è un consiglio finanziario. DYOR.
+<!-- 02 -->
+<section id="italia">
+<div class="sc">
+  <div class="slabel">02 — Accesso dall'Italia</div>
+  <h2>Situazione Italia &amp; VPN</h2>
+  <div class="al stop">
+    <div class="al-icon">⛔</div>
+    <div class="al-body">
+      <div class="al-title">Situazione attuale in Italia</div>
+      <p>A ottobre 2025 Polymarket è stato inserito nella blacklist dell'ADM. A dicembre 2025 l'accesso è stato ripristinato, ma la situazione rimane instabile. Senza VPN attiva sei in modalità view-only: puoi guardare ma non tradare.</p>
     </div>
   </div>
-</footer>
+  <p>Polymarket rileva attivamente le VPN — non tutte funzionano. Queste sono quelle verificate:</p>
+  <h3>VPN consigliate</h3>
+  <div class="tw">
+    <table>
+      <thead><tr><th>VPN</th><th>Affidabilità</th><th>Prezzo/mese</th><th>Server utili</th><th>Crypto</th></tr></thead>
+      <tbody>
+        <tr><td>NordVPN</td><td><span class="chk">✓✓✓</span> Top</td><td>~€3 (2 anni)</td><td>Paesi Bassi, Brasile, Giappone</td><td><span class="chk">✓</span></td></tr>
+        <tr><td>Surfshark</td><td><span class="chk">✓✓</span> Ottima</td><td>~€2 (2 anni)</td><td>Germania, Svizzera</td><td><span class="chk">✓</span></td></tr>
+        <tr><td>Proton VPN</td><td><span class="chk">✓✓</span> Ottima</td><td>Gratis / €5</td><td>Svizzera, Islanda</td><td><span class="chk">✓</span></td></tr>
+        <tr><td>ExpressVPN</td><td><span class="chk">✓✓</span> Buona</td><td>~€6 (1 anno)</td><td>UK, Singapore</td><td><span class="chk">✓</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="al warn">
+    <div class="al-icon">💡</div>
+    <div class="al-body">
+      <div class="al-title">Server da evitare</div>
+      <p>USA, UK, Francia, Germania, Belgio, Polonia, Singapore, Australia — bloccati anche loro. Usa <strong>Paesi Bassi, Brasile, Giappone o Svizzera</strong>.</p>
+    </div>
+  </div>
+  <h3>Guida passo-passo</h3>
+  <div class="steps">
+    <div class="step"><div class="sn">1</div><div><h4>Scegli e installa una VPN</h4><p>NordVPN o Surfshark per il miglior rapporto qualità/prezzo. Scarica l'app sul tuo dispositivo.</p></div></div>
+    <div class="step"><div class="sn">2</div><div><h4>Attiva il Kill Switch</h4><p>Impostazioni VPN → Kill Switch → attiva. Blocca il traffico se la VPN cade, impedendo che Polymarket veda il tuo IP reale.</p></div></div>
+    <div class="step"><div class="sn">3</div><div><h4>Connettiti a un server supportato</h4><p>Seleziona Netherlands o Brazil. Per bypassare meglio i blocchi usa i server "Obfuscated" di NordVPN (Impostazioni → Avanzate).</p></div></div>
+    <div class="step"><div class="sn">4</div><div><h4>Cancella cache del browser</h4><p>Su Chrome: <code>Ctrl+Shift+Delete</code> → Cookie + File memorizzati → Cancella dati. Rimuove tracce della posizione reale.</p></div></div>
+    <div class="step"><div class="sn">5</div><div><h4>Verifica che funzioni</h4><p>Vai su polymarket.com. In alto a destra deve comparire il bottone "Deposit". Se non appare, cambia server VPN.</p></div></div>
+  </div>
+  <div class="al ok">
+    <div class="al-icon">✅</div>
+    <div class="al-body">
+      <div class="al-title">Regola d'oro</div>
+      <p>Tieni sempre la VPN attiva mentre usi Polymarket — non solo alla registrazione, anche durante il trading e i prelievi.</p>
+    </div>
+  </div>
+</div>
+</section>
 
+<!-- 03 -->
+<section id="iniziare">
+<div class="sc">
+  <div class="slabel">03 — Setup</div>
+  <h2>Registrazione e depositi</h2>
+  <h3>Registrazione</h3>
+  <p>Puoi accedere con <strong>email o Google account</strong>. Polymarket crea automaticamente un wallet custodiale — non serve avere già un wallet crypto. Per funzioni avanzate puoi collegare MetaMask o altri wallet esterni.</p>
+  <div class="al warn">
+    <div class="al-icon">ℹ️</div>
+    <div class="al-body">
+      <div class="al-title">KYC</div>
+      <p>Al momento Polymarket non richiede verifica identità (KYC) per usare la piattaforma.</p>
+    </div>
+  </div>
+  <h3>Come depositare fondi</h3>
+  <div class="cards">
+    <div class="card"><div class="ci">💎</div><div class="ct">Crypto (consigliato)</div><p class="cd">Deposita USDC su rete Polygon. Commissioni minime, privacy massima. Usa Binance, Coinbase o Kraken.</p><span class="badge b-green">Consigliato</span></div>
+    <div class="card"><div class="ci">💳</div><div class="ct">Carta di credito/debito</div><p class="cd">Fino a $50.000. Attesa ~5 min. Più semplice ma lascia più tracce.</p><span class="badge b-amber">Limite $50k</span></div>
+    <div class="card"><div class="ci">🅿️</div><div class="ct">PayPal</div><p class="cd">Fino a $10.000. Attesa ~5 min. Comodo ma con limite basso.</p><span class="badge b-amber">Limite $10k</span></div>
+  </div>
+  <div class="al info">
+    <div class="al-icon">🔑</div>
+    <div class="al-body">
+      <div class="al-title">Come comprare USDC per depositare</div>
+      <p>1. Crea account su Coinbase o Binance → 2. Compra USDC con euro → 3. Invia a Polymarket su rete <strong>Polygon</strong> → 4. Saldo disponibile in pochi minuti. Non usare rete Ethereum: commissioni altissime.</p>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- 04 -->
+<section id="meccanica">
+<div class="sc">
+  <div class="slabel">04 — Meccanica</div>
+  <h2>Come funzionano i mercati</h2>
+  <p>Ogni mercato è una domanda con risposta Sì/No. Il prezzo di una share esprime la <strong>probabilità implicita</strong>: una share "Sì" a 65¢ significa che il mercato valuta al 65% la probabilità che l'evento accada.</p>
+  <div class="hl">
+    <div class="hl-icon">💡</div>
+    <div class="hl-body">
+      <strong>Esempio pratico</strong>
+      <p>Mercato: "Il BTC supererà $120k entro giugno 2026?" — prezzo: 42¢. Compri 100 shares "Sì" per $42. Se BTC supera $120k, incassi $100. Profitto: $58. Se non succede, perdi $42.</p>
+    </div>
+  </div>
+  <h3>Tipologie di mercati</h3>
+  <div class="cards">
+    <div class="card"><div class="ci">🗳️</div><div class="ct">Politici</div><p class="cd">Elezioni, referendum, nomine governative. I mercati più liquidi e seguiti.</p></div>
+    <div class="card"><div class="ci">📈</div><div class="ct">Crypto &amp; Finanza</div><p class="cd">Prezzi BTC/ETH, decisioni Fed sui tassi, indicatori economici.</p></div>
+    <div class="card"><div class="ci">⚽</div><div class="ct">Sport</div><p class="cd">Risultati partite, titoli, tornei. Volume in forte crescita nel 2026.</p></div>
+    <div class="card"><div class="ci">🌍</div><div class="ct">Geopolitica</div><p class="cd">Conflitti, trattati, eventi internazionali. Alta volatilità.</p></div>
+  </div>
+  <h3>Come vengono risolti i mercati</h3>
+  <p>Ogni mercato ha una fonte di risoluzione definita (Reuters, AP, siti ufficiali). Un gruppo di arbitri (<em>resolvers</em>) determina l'esito seguendo le regole pubblicate. In caso di controversia, UMA Protocol decide in ultima istanza.</p>
+  <div class="al warn">
+    <div class="al-icon">⚠️</div>
+    <div class="al-body">
+      <div class="al-title">Leggi sempre le regole del mercato</div>
+      <p>Prima di entrare, leggi la sezione "Rules". Ci sono spesso dettagli importanti su come viene definita la condizione di risoluzione — eviti sorprese.</p>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- 05 -->
+<section id="analisi">
+<div class="sc">
+  <div class="slabel">05 — Analisi</div>
+  <h2>Strumenti di analisi</h2>
+  <p>Chi prende Polymarket sul serio non guarda solo il sito principale. Esistono tool di terze parti che danno un vantaggio enorme in termini di dati, tracking dei trader migliori e segnali di mercato.</p>
+  <h3>Analytics &amp; Tracking</h3>
+  <div class="cards">
+    <div class="card"><div class="ci">📊</div><div class="ct">Polymark.et</div><p class="cd">Dashboard completo: top trader, feed real-time, ricerca avanzata. Aggrega Polymarket e Kalshi. Ideale per tracciare i whale.</p><span class="badge b-green">Gratuito</span></div>
+    <div class="card"><div class="ci">🧠</div><div class="ct">HashDive</div><p class="cd">Calcola uno "Smart Score" da -100 a +100 per ogni trader. Screener con filtri per liquidità, volume, momentum e whale.</p><span class="badge b-blue">Avanzato</span></div>
+    <div class="card"><div class="ci">📡</div><div class="ct">PolyAlertHub</div><p class="cd">Alert real-time via Telegram per variazioni di prezzo, grandi trade e attività dei top trader.</p><span class="badge b-amber">Alert Telegram</span></div>
+    <div class="card"><div class="ci">📈</div><div class="ct">PredictFolio</div><p class="cd">Analisi del tuo portafoglio e degli altri trader. PnL real-time, win rate, confronto con top wallet.</p><span class="badge b-green">Gratuito</span></div>
+    <div class="card"><div class="ci">🤖</div><div class="ct">Polyfactual</div><p class="cd">AI-powered: incolla l'URL di un mercato, ottieni analisi di sentiment, rischio e confidence.</p><span class="badge b-blue">AI</span></div>
+    <div class="card"><div class="ci">🔄</div><div class="ct">DeFiRate Aggregator</div><p class="cd">Dashboard live: confronta Polymarket e Kalshi su volume, open interest e transazioni settimanali.</p><span class="badge b-green">Gratuito</span></div>
+  </div>
+  <h3>Fonti per edge informativo</h3>
+  <div class="cards">
+    <div class="card"><div class="ci">🐦</div><div class="ct">X — Liste tematiche</div><p class="cd">Crea liste per politica, crypto, geopolitica. I prezzi su Polymarket si muovono spesso prima dei siti mainstream.</p></div>
+    <div class="card"><div class="ci">📡</div><div class="ct">Manifold Markets</div><p class="cd">Mercato in play-money. Utile per trovare probabilità su eventi di nicchia non ancora listati su Polymarket.</p></div>
+    <div class="card"><div class="ci">🔭</div><div class="ct">Kalshi</div><p class="cd">Stesso evento, prezzo diverso? Confronta per capire quale mercato è più informato o trovare arbitrage.</p></div>
+  </div>
+  <h3>Come tracciare i whale</h3>
+  <p>I trader con più capitale tendono ad avere informazioni migliori. Tracciarli è una delle strategie più diffuse:</p>
+  <div class="steps">
+    <div class="step"><div class="sn">1</div><div><h4>Trova i top trader su Polymark.et o HashDive</h4><p>Filtra per profit totale e win rate. Smart Score alto + volume elevato = trader da seguire.</p></div></div>
+    <div class="step"><div class="sn">2</div><div><h4>Segui i loro wallet pubblici</h4><p>Su blockchain tutto è pubblico. Con Polymark.et puoi vedere ogni trade di ogni wallet in tempo reale.</p></div></div>
+    <div class="step"><div class="sn">3</div><div><h4>Imposta alert su PolyAlertHub</h4><p>Quando un whale apre una posizione grossa su un mercato che segui, ricevi notifica immediata su Telegram.</p></div></div>
+  </div>
+</div>
+</section>
+
+<!-- 06 -->
+<section id="strategie">
+<div class="sc">
+  <div class="slabel">06 — Strategie</div>
+  <h2>Strategie di base</h2>
+  <div class="al stop">
+    <div class="al-icon">⚠️</div>
+    <div class="al-body">
+      <div class="al-title">Non è un consiglio finanziario</div>
+      <p>Strategie comuni discusse dalla community. Ognuno è responsabile delle proprie decisioni. Non investire più di quanto puoi permetterti di perdere.</p>
+    </div>
+  </div>
+  <h3>1. Mercati poco seguiti</h3>
+  <p>I mercati ad alto volume (elezioni USA, BTC price) sono efficienti — difficile avere un edge. I mercati con bassa liquidità su eventi niche spesso hanno prezzi sbagliati. Se conosci bene un settore specifico, cerca lì.</p>
+  <h3>2. Mean reversion su mercati lontani dalla scadenza</h3>
+  <p>Mercati con scadenza molto lontana tendono a essere più volatili. Un evento improbabile può andare temporaneamente a 30¢ dopo una notizia — se pensi sia ancora al 10%, c'è un trade.</p>
+  <h3>3. Fade delle reazioni esagerate</h3>
+  <p>Quando esce una notizia, i prezzi spesso sovra-reagiscono nei primi minuti. Se hai una view diversa e fonti migliori, puoi entrare contro-trend.</p>
+  <h3>4. Seguire i whale (copy trading)</h3>
+  <p>Non il più sofisticato, ma funziona come punto di partenza. Identifica 3-5 trader con track record verificato e segui le loro posizioni su mercati dove non hai una view propria.</p>
+  <div class="hl">
+    <div class="hl-icon">🧮</div>
+    <div class="hl-body">
+      <strong>Kelly Criterion — dimensionare le posizioni</strong>
+      <p>Formula: <code>f = (bp - q) / b</code> dove b = odds, p = probabilità stimata, q = 1-p. Non rischiare mai tutto su un singolo mercato.</p>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- 07 -->
+<section id="rischi">
+<div class="sc">
+  <div class="slabel">07 — Rischi</div>
+  <h2>Rischi da conoscere</h2>
+  <div class="cards">
+    <div class="card"><div class="ci">⚖️</div><div class="ct">Rischio regolatorio</div><p class="cd">La situazione legale in Italia è in evoluzione. Il blocco ADM del 2025 può ripetersi. Non tenere capitali enormi senza un piano di uscita.</p><span class="badge b-red">Alto</span></div>
+    <div class="card"><div class="ci">🔓</div><div class="ct">Smart contract risk</div><p class="cd">Il codice blockchain può avere bug. Sebbene Polymarket sia auditato, il rischio tecnico esiste come su qualsiasi protocollo DeFi.</p><span class="badge b-amber">Basso-medio</span></div>
+    <div class="card"><div class="ci">💧</div><div class="ct">Liquidità bassa</div><p class="cd">Su mercati niche, lo spread bid/ask può essere ampio. Potresti non riuscire a uscire al prezzo desiderato.</p><span class="badge b-amber">Variabile</span></div>
+    <div class="card"><div class="ci">🎲</div><div class="ct">Overconfidence bias</div><p class="cd">Il rischio principale è psicologico: sopravvalutare le proprie previsioni. Tieni un diario dei trade e monitora il win rate reale.</p><span class="badge b-red">Alto</span></div>
+  </div>
+  <div class="al warn">
+    <div class="al-icon">📋</div>
+    <div class="al-body">
+      <div class="al-title">Checklist prima di ogni trade</div>
+      <p>① Hai letto le regole di risoluzione del mercato? ② Il tuo edge è reale o è un bias? ③ Stai rischiando al massimo il 5% del capitale? ④ Hai un piano se il prezzo va contro di te?</p>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- TG BANNER -->
+<div class="tg-banner">
+  <div>
+    <h3>Unisciti alla community italiana</h3>
+    <p>Discussioni quotidiane, analisi dei mercati, segnali e aggiornamenti in tempo reale. Il gruppo Telegram italiano più attivo su Polymarket — <strong>@polymarketita</strong>.</p>
+  </div>
+  <a class="btn-tg-w" href="https://t.me/polymarketita" target="_blank" rel="noopener">
+    <svg viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12L7.17 13.696l-2.94-.918c-.64-.203-.653-.64.136-.954l11.48-4.43c.534-.194 1.002.13.832.827h.006z"/></svg>
+    Entra nel gruppo
+  </a>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <div>
+    <div class="footer-brand">Polymarket<span>ITA</span></div>
+    <div class="footer-sub">La community italiana dei prediction markets</div>
+    <a class="footer-tg" href="https://t.me/polymarketita" target="_blank" rel="noopener">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="#0088cc"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12L7.17 13.696l-2.94-.918c-.64-.203-.653-.64.136-.954l11.48-4.43c.534-.194 1.002.13.832.827h.006z"/></svg>
+      t.me/polymarketita
+    </a>
+  </div>
+  <div class="footer-note">
+    Guida a scopo informativo. L'uso di Polymarket dall'Italia è soggetto a normative in evoluzione. Non è un consiglio finanziario. DYOR.
+  </div>
+</div>
+
+</div><!-- .wrap -->
 </body>
 </html>
